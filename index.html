@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#e51c36">
+  <meta name="description" content="Aplikasi rekap dan scorecard penjualan harian SA Home Credit.">
+  <title>BISA — Sales Tracker</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="splash" class="splash" aria-label="To The Next Target">
+    <div class="splash-glow"></div>
+    <div class="splash-mark"><span class="mark-arrow">↗</span></div>
+    <div class="splash-title">To The Next Target</div>
+    <div class="splash-subtitle">Bisa by Home Credit</div>
+    <div class="splash-loader"><span></span></div>
+  </div>
+
+  <div id="app" class="app-shell hidden">
+    <aside class="sidebar">
+      <div class="brand-lockup">
+        <div class="brand-symbol">B</div>
+        <div><div class="brand-name">BISA</div><div class="brand-caption">SALES TRACKER</div></div>
+      </div>
+      <div class="sidebar-kicker">WORKSPACE</div>
+      <nav class="side-nav" aria-label="Navigasi utama">
+        <button class="nav-item active" data-target="dashboard"><span class="nav-icon">◫</span> Ringkasan</button>
+        <button class="nav-item" data-target="entry"><span class="nav-icon">＋</span> Input Penjualan</button>
+        <button class="nav-item" data-target="history"><span class="nav-icon">▤</span> Riwayat</button>
+        <button class="nav-item" data-target="reports"><span class="nav-icon">▥</span> Laporan</button>
+      </nav>
+      <div class="sidebar-foot">
+        <div class="side-motto">TO THE NEXT TARGET</div>
+        <div class="side-brand">Bisa by Home Credit</div>
+        <div class="offline-pill"><i></i> Data tersimpan di perangkat</div>
+      </div>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar">
+        <div class="topbar-left">
+          <div class="eyebrow">SA PERFORMANCE</div>
+          <h1 id="pageTitle">Ringkasan Penjualan</h1>
+        </div>
+        <div class="topbar-right">
+          <div class="datetime-card">
+            <div class="clock" id="liveClock">--:--:--</div>
+            <div class="date-line" id="liveDate">Memuat tanggal…</div>
+          </div>
+          <button class="install-btn" id="installBtn" hidden>↓ <span>Pasang App</span></button>
+        </div>
+      </header>
+
+      <div class="content-wrap">
+        <section id="panel-dashboard" class="panel active">
+          <div class="hero-card">
+            <div class="hero-orbit orbit-one"></div><div class="hero-orbit orbit-two"></div>
+            <div class="hero-content">
+              <div class="hero-chip"><span class="pulse-dot"></span> SALES SCORECARD</div>
+              <h2>Kejar target.<br><em>Nikmati Hasilnya.</em></h2>
+              <p class="hero-greeting">Halo Arya Adhyana Ishak, Udah siap untuk target berikutnya?</p>
+              <div class="hero-controls">
+                <label class="hero-select-label">PERIODE
+                  <input type="month" id="monthPicker">
+                </label>
+                <label class="hero-select-label">VINTAGE
+                  <select id="vintageSelect" aria-label="Pilih vintage"></select>
+                </label>
+              </div>
+            </div>
+            <div class="hero-score-wrap">
+              <div class="score-ring" id="scoreRing"><div class="score-ring-inner"><strong id="scoreValue">—</strong><span>POIN</span></div></div>
+              <div class="score-caption">SKOR TERTIMBANG</div>
+              <div class="score-subcaption">Maksimal 120 poin*</div>
+            </div>
+          </div>
+
+          <div class="section-heading-row">
+            <div><div class="section-overline">MONTHLY PERFORMANCE</div><h2>Progress scorecard</h2></div>
+            <span class="period-badge" id="monthLabel">—</span>
+          </div>
+          <div id="metricGrid" class="metric-grid"></div>
+
+          <div class="dashboard-lower">
+            <section class="surface-card target-card">
+              <div class="card-heading"><div><div class="section-overline">TARGET GAP</div><h3>Yang perlu dikejar</h3></div><span class="heading-icon">↗</span></div>
+              <div id="gapList" class="gap-list"></div>
+              <div class="daily-pace" id="dailyPace"></div>
+            </section>
+            <section class="surface-card activity-card">
+              <div class="card-heading"><div><div class="section-overline">LATEST ACTIVITY</div><h3>Aktivitas terbaru</h3></div><button class="text-btn" data-goto="history">Lihat semua →</button></div>
+              <div id="recentList" class="recent-list"></div>
+            </section>
+          </div>
+          <div class="formula-note">*Skor sementara: realisasi ÷ target, dibatasi maksimal 120% per komponen, lalu dikalikan bobot. Detail aturan skor pada teks sumber terpotong dan perlu dikonfirmasi.</div>
+        </section>
+
+        <section id="panel-entry" class="panel">
+          <div class="page-intro"><div class="section-overline">DAILY INPUT</div><h2>Catat hasil penjualan</h2><p>Masukkan Volume, VAS, SAI, dan Pelanggan Baru secara terpisah. Isi satu atau beberapa indikator dalam satu catatan; semua nilai akan otomatis dijumlahkan ke rekap periode.</p></div>
+          <div class="entry-layout">
+            <form id="salesForm" class="surface-card sales-form">
+              <div class="form-topline"><span class="form-icon">＋</span><div><h3 id="formTitle">Input penjualan baru</h3><p>Isi hasil yang berhasil dicapai</p></div></div>
+              <input type="hidden" id="recordId">
+              <div class="form-grid">
+                <label class="field full"><span>Tanggal penjualan</span><input type="date" id="entryDate" required></label>
+                <div class="field full field-section-label">HASIL PENJUALAN · ISI SESUAI REALISASI</div>
+                <label class="field"><span>Volume / Sales Volume (Rp)</span><div class="input-prefix"><b>Rp</b><input type="number" id="entryVolume" min="0" step="1000" placeholder="0"></div><small>Nominal volume pembiayaan</small></label>
+                <label class="field"><span>Pelanggan baru (orang)</span><input type="number" id="entryCustomers" min="0" step="1" placeholder="0"><small>Jumlah pelanggan baru</small></label>
+                <label class="field"><span>Premi VAS (Rp)</span><div class="input-prefix"><b>Rp</b><input type="number" id="entryVas" min="0" step="1000" placeholder="0"></div><small>Nominal premi VAS</small></label>
+                <label class="field"><span>Premi SAI (Rp)</span><div class="input-prefix"><b>Rp</b><input type="number" id="entrySai" min="0" step="1000" placeholder="0"></div><small>Nominal premi SAI</small></label>
+                <label class="field full"><span>Catatan (opsional)</span><textarea id="entryNote" rows="3" placeholder="Contoh: 2 kontrak smartphone, follow-up pelanggan…"></textarea></label>
+              </div>
+              <div class="entry-live-preview" aria-live="polite">
+                <div class="entry-preview-heading"><strong>Ringkasan input</strong><span>Ter-update otomatis</span></div>
+                <div class="entry-preview-grid">
+                  <div class="entry-preview-item"><span>Volume</span><strong id="previewVolume">Rp 0</strong></div>
+                  <div class="entry-preview-item"><span>Pelanggan Baru</span><strong id="previewCustomers">0 orang</strong></div>
+                  <div class="entry-preview-item"><span>Premi VAS</span><strong id="previewVas">Rp 0</strong></div>
+                  <div class="entry-preview-item"><span>Premi SAI</span><strong id="previewSai">Rp 0</strong></div>
+                </div>
+              </div>
+              <div class="form-actions"><button type="button" class="btn-secondary" id="cancelEditBtn" hidden>Batal</button><button type="submit" class="btn-primary" id="saveRecordBtn">Simpan penjualan <span>→</span></button></div>
+              <div id="formFeedback" class="form-feedback" role="status"></div>
+            </form>
+            <aside class="surface-card entry-side">
+              <div class="side-tip-icon">✦</div><div class="section-overline">QUICK REMINDER</div><h3>Progress kecil tetap berarti.</h3><p>Catat penjualan setiap selesai transaksi supaya rekap harian dan pencapaian bulanan selalu terpantau.</p>
+              <div class="mini-target" id="entryTargetMini"></div>
+              <button class="btn-outline" type="button" data-goto="dashboard">Lihat dashboard <span>↗</span></button>
+            </aside>
+          </div>
+        </section>
+
+        <section id="panel-history" class="panel">
+          <div class="page-intro"><div class="section-overline">SALES JOURNAL</div><h2>Riwayat penjualan</h2><p>Semua catatan tersimpan di perangkat ini dan bisa diedit kapan saja.</p></div>
+          <section class="surface-card history-card">
+            <div class="history-toolbar"><label class="search-field">⌕ <input id="historySearch" type="search" placeholder="Cari catatan atau tanggal…"></label><input type="month" id="historyMonth" aria-label="Filter bulan riwayat"><span class="record-count" id="recordCount">0 catatan</span></div>
+            <div class="table-wrap"><table class="data-table"><thead><tr><th>Tanggal</th><th>Sales Volume</th><th>Pelanggan Baru</th><th>Premi VAS</th><th>Premi SAI</th><th>Catatan</th><th>Aksi</th></tr></thead><tbody id="historyRows"></tbody></table></div>
+            <div class="mobile-records" id="mobileHistoryRows"></div>
+          </section>
+        </section>
+
+        <section id="panel-reports" class="panel">
+          <div class="page-intro"><div class="section-overline">REPORT CENTER</div><h2>Laporan performa</h2><p>Pilih periode rekap, lalu simpan laporan sebagai PDF atau file Excel.</p></div>
+          <section class="surface-card report-controls">
+            <div class="report-selectors"><label class="field"><span>Jenis laporan</span><select id="reportPeriod"><option value="day">Harian</option><option value="week">Mingguan</option><option value="month" selected>Bulanan</option></select></label><label class="field"><span>Tanggal acuan</span><input type="date" id="reportDate"></label><button class="btn-primary report-refresh" id="refreshReportBtn">Tampilkan laporan <span>→</span></button></div>
+            <div class="export-actions"><button class="btn-outline" id="pdfBtn">▧ Simpan PDF</button><button class="btn-outline" id="excelBtn">▦ Export Excel</button><button class="btn-quiet" id="backupBtn">↓ Backup data</button><button class="btn-quiet" id="restoreBtn">↑ Pulihkan</button><input id="restoreInput" type="file" accept="application/json,.json" hidden></div>
+          </section>
+          <div id="reportPreview" class="report-preview surface-card"></div>
+          <div id="printArea" class="print-area" aria-hidden="true"></div>
+          <div class="report-footnote">PDF: pilih “Simpan sebagai PDF” pada menu cetak browser. Excel: file kompatibel Excel (.xls) berisi ringkasan dan detail transaksi. Backup data menyimpan salinan seluruh catatan dalam format JSON.</div>
+        </section>
+      </div>
+      <footer class="app-footer"><span> BISA <b>·</b> TO THE NEXT TARGET</span><span>Bisa by Home Credit</span></footer>
+    </main>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>
